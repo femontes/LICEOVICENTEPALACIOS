@@ -518,6 +518,33 @@
         </button>
     </div>
 
+    <!-- Modal Orientador IA -->
+    <div id="orientador-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity">
+        <div class="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative animate-[chatPop_0.3s_ease-out]">
+            <div class="bg-gradient-lvpv p-6 text-white text-center">
+                <h3 class="text-2xl font-black uppercase flex items-center justify-center gap-2">
+                    <i data-lucide="compass"></i> Orientador IA ✨
+                </h3>
+                <p class="text-sm opacity-90 mt-2">Cuéntame qué te apasiona y te sugeriré los mejores talleres del liceo para ti.</p>
+                <button onclick="document.getElementById('orientador-modal').classList.add('hidden')" class="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"><i data-lucide="x"></i></button>
+            </div>
+            <div class="p-6 text-azul-marino">
+                <textarea id="orientador-input" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm outline-none focus:border-verde-esperanza focus:ring-2 focus:ring-verde-esperanza/20 transition-all resize-none" placeholder="Ej: Me encantan los animales, armar cosas tecnológicas y leer misterio..."></textarea>
+                <button id="btn-orientador" class="w-full mt-4 bg-verde-esperanza text-white font-black uppercase tracking-widest py-4 rounded-xl hover:bg-verde-profundo transition shadow-lg flex justify-center items-center gap-2">
+                    Analizar mi perfil ✨
+                </button>
+                
+                <div id="orientador-result" class="mt-6 hidden">
+                    <h4 class="font-bold text-azul-marino mb-2 text-sm uppercase"><i data-lucide="lightbulb" class="inline w-4 h-4 text-verde-esperanza"></i> Recomendación para ti:</h4>
+                    <div id="orientador-text" class="text-sm text-gray-700 bg-azul-niebla p-4 rounded-xl border-l-4 border-verde-esperanza leading-relaxed"></div>
+                </div>
+                <div id="orientador-loading" class="mt-6 hidden flex justify-center py-4">
+                    <div class="typing-indicator"><span></span><span></span><span></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -586,9 +613,7 @@
             mBtn.onclick = () => mNav.classList.toggle('hidden');
 
             // Configuración de Gemini API (Chat y Orientador)
-            // ⚠️ CUANDO DESCARGUES LA WEB PARA PUBLICARLA, REEMPLAZA LA LÍNEA DE ABAJO POR ESTA:
-            // const apiKey = "AIzaSyAZc7RhcoTn8k3Wk7sbFCBQoyFJHu0qcuY";
-            const apiKey = "AIzaSyAZc7RhcoTn8k3Wk7sbFCBQoyFJHu0qcuY"; // Se deja vacío aquí porque esta plataforma inyecta su propia clave de prueba.
+            const apiKey = "AIzaSyAZc7RhcoTn8k3Wk7sbFCBQoyFJHu0qcuY"; // Clave API activada
             const systemPrompt = "Eres 'Gemini LVPV', el asistente virtual del Liceo Vicente Palacios Valdés (Tomé, Región del Biobío, Chile). Eres amable, formal y ayudas a resolver dudas de apoderados y estudiantes sobre admisión (que es vía SAE), historia (fundado el 2 de junio de 1905, 121 años de historia), talleres extraescolares (JEC: deportes, artes, ciencias) y valores institucionales. Tus respuestas deben ser breves, claras y muy concisas. Nunca inventes información; si no sabes algo, indica que pueden escribir a contacto@lvpv.cl o llamar al +56 9 5159 3655.";
             let chatHistory = [];
 
@@ -599,7 +624,7 @@
                     systemInstruction: { parts: [{ text: systemPrompt }] }
                 };
 
-                const delays = [1000, 2000, 4000, 8000, 16000];
+                const delays = [1000, 2000, 4000, 8000];
 
                 for (let i = 0; i <= delays.length; i++) {
                     try {
@@ -609,7 +634,12 @@
                             body: JSON.stringify(payload)
                         });
 
-                        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+                        if (!response.ok) {
+                            if (response.status === 400 || response.status === 403) {
+                                return "Error de conexión: Verifica que la clave de API sea correcta y tenga permisos.";
+                            }
+                            throw new Error(`Error HTTP: ${response.status}`);
+                        }
 
                         const result = await response.json();
                         const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -678,25 +708,94 @@
                 cMsgs.appendChild(typing);
                 cMsgs.scrollTop = cMsgs.scrollHeight;
 
-                // Llamada a Gemini
-                const responseText = await fetchGeminiResponse(val);
-                
-                // Remover indicador y mostrar respuesta
-                typing.remove();
-                const bMsg = document.createElement('div');
-                bMsg.className = "bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm max-w-[85%] text-sm";
-                bMsg.innerHTML = responseText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); // Formateo básico de negritas y saltos de línea
-                cMsgs.appendChild(bMsg);
-                cMsgs.scrollTop = cMsgs.scrollHeight;
-
-                // Habilitar input nuevamente
-                cInput.disabled = false;
-                document.getElementById('send-chat').disabled = false;
-                cInput.focus();
+                try {
+                    // Llamada a Gemini
+                    const responseText = await fetchGeminiResponse(val);
+                    
+                    // Remover indicador y mostrar respuesta
+                    typing.remove();
+                    const bMsg = document.createElement('div');
+                    bMsg.className = "bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm max-w-[85%] text-sm";
+                    bMsg.innerHTML = responseText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); // Formateo básico de negritas y saltos de línea
+                    cMsgs.appendChild(bMsg);
+                    cMsgs.scrollTop = cMsgs.scrollHeight;
+                } catch (error) {
+                    typing.remove();
+                    const bMsg = document.createElement('div');
+                    bMsg.className = "bg-white p-3 rounded-2xl rounded-tl-none border border-red-200 bg-red-50 text-red-600 shadow-sm max-w-[85%] text-sm";
+                    bMsg.innerText = "Hubo un error de conexión, intenta de nuevo.";
+                    cMsgs.appendChild(bMsg);
+                } finally {
+                    // Habilitar input nuevamente SIEMPRE
+                    cInput.disabled = false;
+                    document.getElementById('send-chat').disabled = false;
+                    cInput.focus();
+                }
             };
             
             document.getElementById('send-chat').onclick = sendMsg;
             cInput.onkeypress = (e) => e.key === 'Enter' && sendMsg();
+
+            // Lógica del Orientador IA impulsada por Gemini
+            async function fetchGeminiOrientador(userPrompt) {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const sysPrompt = "Eres el Orientador Escolar IA del Liceo Vicente Palacios Valdés. El estudiante te dirá sus gustos e intereses. Tu tarea es recomendarle 2 o 3 talleres extraescolares específicos de nuestra oferta JEC (Deportes, Artes, Ciencias y Humanidades) que hagan match perfecto con él. Explica brevemente por qué esto potenciará su futuro profesional. Sé muy entusiasta, directo, inspirador y usa emojis.";
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+                    systemInstruction: { parts: [{ text: sysPrompt }] }
+                };
+                
+                const delays = [1000, 2000, 4000];
+                for (let i = 0; i <= delays.length; i++) {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        if (!response.ok) {
+                            if (response.status === 400 || response.status === 403) return "Error de conexión con la API.";
+                            throw new Error(`HTTP: ${response.status}`);
+                        }
+                        
+                        const result = await response.json();
+                        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (text) return text;
+                        throw new Error("Respuesta vacía");
+                    } catch (error) {
+                        if (i < delays.length) await new Promise(res => setTimeout(res, delays[i]));
+                        else return "Lo siento, la red está inestable. ¡Prueba a intentarlo más tarde!";
+                    }
+                }
+            }
+
+            const btnOrientador = document.getElementById('btn-orientador');
+            if (btnOrientador) {
+                btnOrientador.onclick = async () => {
+                    const inputEl = document.getElementById('orientador-input');
+                    const val = inputEl.value.trim();
+                    if(!val) return;
+
+                    btnOrientador.disabled = true;
+                    btnOrientador.innerHTML = 'Analizando...';
+                    document.getElementById('orientador-loading').classList.remove('hidden');
+                    document.getElementById('orientador-result').classList.add('hidden');
+
+                    try {
+                        const responseText = await fetchGeminiOrientador(val);
+                        document.getElementById('orientador-text').innerHTML = responseText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+                        document.getElementById('orientador-result').classList.remove('hidden');
+                    } catch (error) {
+                        document.getElementById('orientador-text').innerHTML = "Ocurrió un error al procesar tu perfil.";
+                        document.getElementById('orientador-result').classList.remove('hidden');
+                    } finally {
+                        document.getElementById('orientador-loading').classList.add('hidden');
+                        btnOrientador.disabled = false;
+                        btnOrientador.innerHTML = 'Analizar de nuevo ✨';
+                    }
+                };
+            }
         });
     </script>
 </body>
