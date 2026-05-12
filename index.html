@@ -172,6 +172,13 @@
             from { opacity: 0; transform: translateY(20px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
+
+        /* Animación de "Escribiendo" */
+        .typing-indicator { display: flex; gap: 4px; padding: 4px 8px; align-items: center; }
+        .typing-indicator span { width: 6px; height: 6px; background-color: var(--verde-esperanza); border-radius: 50%; animation: typingDots 1.4s infinite ease-in-out both; }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typingDots { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 <body class="antialiased">
@@ -221,31 +228,10 @@
                     <span class="text-dinamico" id="palabra-cambiante">CIUDADANOS</span>
                 </h2>
                 <p class="reveal-left text-lg md:text-xl text-gray-200 mb-10 font-light leading-relaxed max-w-2xl">
-                    Tradición y Excelencia Académica en el corazón de Tomé. Potenciamos los sueños de cada estudiante.
+                    121 años formando futuro desde el corazón de Tomé. Un Liceo Científico-Humanista con historia, vocación y compromiso, dedicado a potenciar los sueños de cada estudiante.
                 </p>
-                <div class="reveal flex flex-wrap gap-4">
-                    <a href="#admision" class="bg-gradient-lvpv text-white px-8 py-4 rounded-lg font-bold uppercase text-sm tracking-widest shadow-xl flex items-center gap-2 hover:scale-105 transition">
-                        <i data-lucide="send" size="18"></i> Postula 2026
-                    </a>
-                    <a href="#nosotros" class="bg-white/10 border-2 border-white/30 text-white px-8 py-4 rounded-lg font-bold uppercase text-sm tracking-widest flex items-center gap-2 hover:bg-white hover:text-azul-lvpv transition">
-                        <i data-lucide="landmark" size="18"></i> Historia
-                    </a>
-                </div>
                 
-                <!-- Redes Sociales en el Hero -->
-                <div class="reveal flex gap-4 mt-6">
-                    <a href="https://www.facebook.com/lvpvtome" target="_blank" rel="noopener noreferrer" class="p-3 bg-white/10 rounded-full text-white hover:bg-verde-esperanza hover:scale-110 transition shadow-sm border border-white/20" aria-label="Facebook LVPV">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    </a>
-                    <a href="https://www.instagram.com/lvptome/" target="_blank" rel="noopener noreferrer" class="p-3 bg-white/10 rounded-full text-white hover:bg-verde-esperanza hover:scale-110 transition shadow-sm border border-white/20" aria-label="Instagram LVPV">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
-                    </a>
-                    <a href="https://www.youtube.com/@VicentePalaciosVald%C3%A9s" target="_blank" rel="noopener noreferrer" class="p-3 bg-white/10 rounded-full text-white hover:bg-verde-esperanza hover:scale-110 transition shadow-sm border border-white/20" aria-label="YouTube LVPV">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.17C2.5 7.17 2.5 5 4.67 5c1.78 0 7.33 0 7.33 0s5.56 0 7.33 0c2.17 0 2.17 2.17 2.17 2.17s0 2.42 0 4.83c0 2.42 0 4.83 0 4.83s0 2.17-2.17 2.17c-1.78 0-7.33 0-7.33 0s-5.56 0-7.33 0c-2.17 0-2.17-2.17-2.17-2.17s0-2.42 0-4.83c0-2.42 0-4.83 0-4.83z"></path><polygon points="9.75 15.02 15.5 11.5 9.75 7.98 9.75 15.02"></polygon></svg>
-                    </a>
-                </div>
-
-                <div class="reveal grid grid-cols-2 md:grid-cols-3 gap-4 mt-8 max-w-2xl">
+                <div class="reveal grid grid-cols-2 md:grid-cols-3 gap-4 mt-12 max-w-2xl">
                     <div class="hero-stat p-4 card-hover hover:bg-white/20 transition-colors cursor-default">
                         <p class="text-3xl font-black text-white counter" data-target="121">0</p>
                         <p class="text-[10px] uppercase tracking-widest text-gray-300 font-bold">Años</p>
@@ -264,7 +250,7 @@
             <!-- Imagen del Escudo (Nueva estructura) -->
             <div class="hidden lg:flex lg:w-1/2 justify-center lg:justify-end reveal-right delay-500 z-10">
                 <div class="animate-floating w-full max-w-[550px] xl:max-w-[650px]">
-                    <img src="https://raw.githubusercontent.com/femontes/WEB-LVPV/refs/heads/main/ESCUDO%20ALUMNOS%203.png" alt="Escudo Alumnos LVPV" class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+                    <img src="https://raw.githubusercontent.com/femontes/WEB-LVPV/refs/heads/main/ESCUDO%20ALUMNOS.png" alt="Escudo Alumnos LVPV" class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
                 </div>
             </div>
         </div>
@@ -407,7 +393,7 @@
                         <div class="p-4 bg-verde-suave rounded-xl border-l-4 border-verde-esperanza font-bold text-verde-profundo card-hover">01. Infórmate en SAE</div>
                         <div class="p-4 bg-azul-niebla rounded-xl border-l-4 border-azul-lvpv font-bold text-azul-marino card-hover">02. Selecciona nuestro liceo</div>
                     </div>
-                    <button class="w-full bg-azul-lvpv text-white py-4 rounded-xl font-black uppercase tracking-widest hover:opacity-90 transition shadow-lg">Solicitar Información</button>
+                    <a href="mailto:utp@lvpv.cl" class="block text-center w-full bg-azul-lvpv text-white py-4 rounded-xl font-black uppercase tracking-widest hover:opacity-90 transition shadow-lg">Solicitar Información</a>
                 </div>
             </div>
         </div>
@@ -520,7 +506,7 @@
                 <button id="close-chat"><i data-lucide="x" size="20"></i></button>
             </div>
             <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm bg-gray-50">
-                <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm">¡Hola! Soy tu asistente LVPV. ¿Quieres saber sobre admisión o talleres?</div>
+                <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm" id="welcome-message">¡Hola! Soy el asistente virtual del Liceo Vicente Palacios Valdés. ¿En qué te puedo ayudar hoy?</div>
             </div>
             <div class="p-4 bg-white border-t flex gap-2">
                 <input type="text" id="chat-input" placeholder="Pregunta algo..." class="flex-1 bg-gray-100 px-4 py-2 rounded-xl text-sm outline-none">
@@ -599,6 +585,52 @@
             const mNav = document.getElementById('mobile-nav');
             mBtn.onclick = () => mNav.classList.toggle('hidden');
 
+            // Configuración de Gemini API (Chat y Orientador)
+            // ⚠️ CUANDO DESCARGUES LA WEB PARA PUBLICARLA, REEMPLAZA LA LÍNEA DE ABAJO POR ESTA:
+            // const apiKey = "AIzaSyAZc7RhcoTn8k3Wk7sbFCBQoyFJHu0qcuY";
+            const apiKey = ""; // Se deja vacío aquí porque esta plataforma inyecta su propia clave de prueba.
+            const systemPrompt = "Eres 'Gemini LVPV', el asistente virtual del Liceo Vicente Palacios Valdés (Tomé, Región del Biobío, Chile). Eres amable, formal y ayudas a resolver dudas de apoderados y estudiantes sobre admisión (que es vía SAE), historia (fundado el 2 de junio de 1905, 121 años de historia), talleres extraescolares (JEC: deportes, artes, ciencias) y valores institucionales. Tus respuestas deben ser breves, claras y muy concisas. Nunca inventes información; si no sabes algo, indica que pueden escribir a contacto@lvpv.cl o llamar al +56 9 5159 3655.";
+            let chatHistory = [];
+
+            async function fetchGeminiResponse(userQuery) {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                const payload = {
+                    contents: [...chatHistory, { role: "user", parts: [{ text: userQuery }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                };
+
+                const delays = [1000, 2000, 4000, 8000, 16000];
+
+                for (let i = 0; i <= delays.length; i++) {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+                        const result = await response.json();
+                        const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                        if (text) {
+                            chatHistory.push({ role: "user", parts: [{ text: userQuery }] });
+                            chatHistory.push({ role: "model", parts: [{ text: text }] });
+                            return text;
+                        } else {
+                            throw new Error("Respuesta vacía");
+                        }
+                    } catch (error) {
+                        if (i < delays.length) {
+                            await new Promise(res => setTimeout(res, delays[i]));
+                        } else {
+                            return "Lo siento, tengo intermitencias de red en este momento. Por favor, intenta de nuevo más tarde o comunícate a contacto@lvpv.cl.";
+                        }
+                    }
+                }
+            }
+
             // Slider Historia
             const slides = document.querySelectorAll('#history-slider .slide');
             let currentSlide = 0;
@@ -623,30 +655,46 @@
             cToggle.onclick = () => cWin.classList.toggle('active');
             document.getElementById('close-chat').onclick = () => cWin.classList.remove('active');
 
-            const botReply = (txt) => {
-                const msg = txt.toLowerCase();
-                if(msg.includes('admision')) return "La admisión 2026 es vía SAE. ¡Te esperamos!";
-                if(msg.includes('taller')) return "Tenemos talleres de deporte, arte y ciencia. ¿Cuál te interesa?";
-                return "Para más información, escríbenos a contacto@lvpv.cl.";
-            };
-
-            const sendMsg = () => {
+            const sendMsg = async () => {
                 const val = cInput.value.trim();
                 if(!val) return;
+                
+                // Deshabilitar input mientras se procesa la respuesta
+                cInput.disabled = true;
+                document.getElementById('send-chat').disabled = true;
+
+                // Mensaje del usuario
                 const uMsg = document.createElement('div');
-                uMsg.className = "bg-azul-lvpv text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[85%]";
+                uMsg.className = "bg-azul-lvpv text-white p-3 rounded-2xl rounded-tr-none ml-auto max-w-[85%] text-sm";
                 uMsg.innerText = val;
                 cMsgs.appendChild(uMsg);
                 cInput.value = '';
+                cMsgs.scrollTop = cMsgs.scrollHeight;
                 
-                setTimeout(() => {
-                    const bMsg = document.createElement('div');
-                    bMsg.className = "bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm max-w-[85%]";
-                    bMsg.innerText = botReply(val);
-                    cMsgs.appendChild(bMsg);
-                    cMsgs.scrollTop = cMsgs.scrollHeight;
-                }, 600);
+                // Indicador de "Escribiendo..."
+                const typing = document.createElement('div');
+                typing.className = "bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm max-w-[85%] typing-indicator";
+                typing.innerHTML = "<span></span><span></span><span></span>";
+                cMsgs.appendChild(typing);
+                cMsgs.scrollTop = cMsgs.scrollHeight;
+
+                // Llamada a Gemini
+                const responseText = await fetchGeminiResponse(val);
+                
+                // Remover indicador y mostrar respuesta
+                typing.remove();
+                const bMsg = document.createElement('div');
+                bMsg.className = "bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm max-w-[85%] text-sm";
+                bMsg.innerHTML = responseText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); // Formateo básico de negritas y saltos de línea
+                cMsgs.appendChild(bMsg);
+                cMsgs.scrollTop = cMsgs.scrollHeight;
+
+                // Habilitar input nuevamente
+                cInput.disabled = false;
+                document.getElementById('send-chat').disabled = false;
+                cInput.focus();
             };
+            
             document.getElementById('send-chat').onclick = sendMsg;
             cInput.onkeypress = (e) => e.key === 'Enter' && sendMsg();
         });
